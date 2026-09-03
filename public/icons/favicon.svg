@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KEC SHIELD">
+  <rect width="64" height="64" rx="12" fill="#050812"/>
+  <path d="M32 8 L52 16 V34 C52 46 42 54 32 58 C22 54 12 46 12 34 V16 Z" fill="none" stroke="#00ff87" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M32 18 V28 M24 22 H40" fill="none" stroke="#60efff" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="32" cy="38" r="7" fill="none" stroke="#00ff87" stroke-width="2"/>
+  <path d="M29 38 L31.2 40.2 L35.5 35.5" fill="none" stroke="#ffcc00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

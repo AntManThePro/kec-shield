@@ -1,0 +1,43 @@
+{
+  "name": "kec-shield",
+  "private": false,
+  "version": "1.0.0",
+  "description": "KEC SHIELD — TWC defense and field incident documentation system. Neon NEXUS ops console for crews, evidence, and unemployment-claim readiness.",
+  "type": "module",
+  "author": "DoubleA @ AntManThePro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AntManThePro/kec-shield.git"
+  },
+  "homepage": "https://antmanthepro.github.io/kec-shield/",
+  "bugs": {
+    "url": "https://github.com/AntManThePro/kec-shield/issues"
+  },
+  "keywords": [
+    "nexus",
+    "twc",
+    "incident-documentation",
+    "field-ops",
+    "qa",
+    "react",
+    "pwa"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "vite": "^6.0.3"
+  }
+}
