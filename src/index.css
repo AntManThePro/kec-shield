@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --n-green: #00ff87;
+  --n-cyan: #60efff;
+  --n-pink: #ff0080;
+  --n-yellow: #ffcc00;
+  --n-dark: #0a0e27;
+  --n-darker: #050812;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: var(--n-darker);
+  color: var(--n-cyan);
+}
+
+body {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  margin: 0;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #00ff87 #050812;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #00ff87;
+  border-radius: 999px;
+}
+
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(130deg);
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 255, 135, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 135, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
