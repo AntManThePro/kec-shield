@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
@@ -7,10 +8,13 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    assetsInlineLimit: 4096
+    rollupOptions: {
+      input: resolve(__dirname, 'index.vite.html')
+    }
   },
   server: {
     port: 5173,
-    host: true
+    host: true,
+    open: '/index.vite.html'
   }
 });
