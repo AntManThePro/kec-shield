@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#050812" />
+  <title>KEC SHIELD /// TWC Defense</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{--g:#00ff87;--c:#60efff;--p:#ff0080;--y:#ffcc00;--d:#0a0e27;--k:#050812}
+    *{box-sizing:border-box;scrollbar-width:thin;scrollbar-color:#00ff87 #050812}
+    html,body{margin:0;min-height:100%;background:var(--k);color:var(--c);font-family:'JetBrains Mono',ui-monospace,monospace}
+    body{background-image:linear-gradient(rgba(0,255,135,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,135,.04) 1px,transparent 1px);background-size:28px 28px}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    header{border-bottom:1px solid var(--g);background:#0a0e27cc;box-shadow:0 0 40px #00ff8720}
+    .brand{display:flex;align-items:center;gap:10px}
+    .pulse{width:10px;height:10px;border-radius:50%;background:var(--g);animation:p 1.4s infinite}
+    @keyframes p{50%{opacity:.35}}
+    h1{margin:0;color:var(--g);font-size:22px}
+    .sub{font-size:11px;opacity:.85}
+    nav{border-bottom:1px solid var(--c);background:#60efff0d;display:flex;gap:6px;padding:8px 16px;max-width:1100px;margin:0 auto}
+    nav button{background:transparent;border:0;border-bottom:2px solid transparent;color:var(--c);padding:8px 12px;font-weight:800;font-size:11px}
+    nav button.on{color:var(--g);border-color:var(--g);background:#00ff8714}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media(min-width:800px){.grid.stats{grid-template-columns:repeat(5,1fr)}.grid.two{grid-template-columns:1fr 1fr}}
+    .card{border:1px solid var(--c);background:#60efff0d;border-radius:10px;padding:14px}
+    .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+    .num{font-size:28px;font-weight:800;margin-top:6px}
+    .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0}
+    .bar{width:120px;height:8px;border-radius:99px;background:#60efff22;overflow:hidden}
+    .bar>i{display:block;height:100%}
+    .list{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto}
+    .inc{text-align:left;border-radius:10px;padding:12px;border:1px solid}
+    .btn{border:0;border-radius:10px;padding:12px;font-weight:800}
+    .btn-g{background:var(--g);color:var(--k);box-shadow:0 0 20px #00ff8740}
+    .btn-y{background:var(--y);color:var(--k)}
+    .btn-c{background:var(--c);color:var(--k)}
+    .btn-ghost{background:transparent;border:1px solid var(--c);color:var(--c)}
+    .btn-p{background:#ff008020;border:1px solid var(--p);color:var(--p)}
+    label{display:block;margin:10px 0;font-size:12px}
+    label span{display:block;margin-bottom:6px;color:var(--c);font-weight:800;font-size:11px}
+    input,select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--c);background:var(--k);color:var(--c)}
+    textarea{min-height:90px;resize:vertical}
+    .toast{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:50;padding:8px 14px;border:1px solid var(--g);color:var(--g);background:#050812ee;border-radius:8px;font-size:12px}
+    .toast.err{border-color:var(--p);color:var(--p)}
+    .fab{position:fixed;right:18px;bottom:18px}
+    details{border-radius:10px;padding:12px;margin:8px 0}
+    canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;opacity:.28}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div id="toast" class="toast hidden"></div>
+<header>
+  <div class="wrap brand">
+    <span class="pulse"></span>
+    <div>
+      <h1>KEC SHIELD</h1>
+      <div class="sub">/// TWC Defense & Incident Documentation — DoubleA @ AntManThePro</div>
+    </div>
+    <div style="margin-left:auto;color:var(--y);font-size:11px" id="readyHead">READINESS 0%</div>
+  </div>
+</header>
+<nav>
+  <button class="on" data-tab="dash">DASHBOARD</button>
+  <button data-tab="cats">CATEGORIES</button>
+  <button data-tab="sys">SYSTEM</button>
+</nav>
+<main class="wrap" id="app"></main>
+<div class="fab"><button class="btn btn-y" id="exportTxt">EXPORT TWC</button></div>
+<script src="./shield.js"></script>
+</body>
+</html>
