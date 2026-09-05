@@ -1,17 +1,124 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KEC SHIELD v2 — loading vault</title>
-<style>body{margin:0;background:#050812;color:#00ff87;font-family:ui-monospace,monospace;display:grid;place-items:center;height:100vh}</style>
-</head><body>
-<div>LOADING VAULT…</div>
-<script src="./vault-p0.js"></script>
-<script src="./vault-p1.js"></script>
-<script src="./vault-p2.js"></script>
+<title>KEC SHIELD v2 — Local Vault</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<style>
+:root{--g:#00ff87;--c:#60efff;--p:#ff0080;--y:#ffcc00;--k:#050812;--d:#0a0e27}
+*{box-sizing:border-box}body{margin:0;background:var(--k);color:var(--c);font-family:ui-monospace,Consolas,monospace}
+h1{color:var(--g);letter-spacing:2px;margin:0}
+.sub{color:var(--y);font-size:11px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+header{border-bottom:1px solid var(--g);background:#0a0e27cc;padding:14px 0}
+.card{border:1px solid var(--c);background:#60efff0d;border-radius:10px;padding:14px;margin:10px 0}
+button,input,select,textarea{font:inherit;width:100%;padding:10px;border-radius:8px;border:1px solid var(--c);background:var(--k);color:var(--c)}
+button{cursor:pointer;font-weight:800;width:auto}
+.btn{background:var(--g);color:var(--k);border:0;padding:12px 16px}
+.err{color:var(--p);font-size:12px;margin-top:8px}
+.lock{min-height:100vh;display:grid;place-items:center;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.inc{border:1px solid var(--p);padding:10px;border-radius:8px;margin:8px 0}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div id="lock" class="lock">
+  <div style="max-width:360px;width:100%;text-align:center">
+    <div style="font-size:42px">🔒</div>
+    <h1>KEC SHIELD</h1>
+    <div class="sub">LOCAL VAULT — first PIN you type becomes the key on this device</div>
+    <input id="email" type="email" placeholder="Work email (optional)" style="margin:16px 0 8px">
+    <input id="pin" type="password" placeholder="PIN / password">
+    <div style="margin-top:12px"><button class="btn" id="go">UNLOCK</button></div>
+    <div id="err" class="err"></div>
+    <p class="sub" style="margin-top:18px">Netlify Supabase is unplugged. This copy stores roster + incidents on this phone only.</p>
+  </div>
+</div>
+<div id="app" class="hidden">
+  <header><div class="wrap">
+    <h1>KEC SHIELD v2</h1>
+    <div class="sub">Local vault · ASA / DFW crews · TWC log</div>
+  </div></header>
+  <div class="wrap">
+    <div class="card">
+      <div class="sub">NEW INCIDENT</div>
+      <label>Crew <select id="crew"></select></label>
+      <label>Employee <input id="emp" placeholder="Full name"></label>
+      <label>Category
+        <select id="cat">
+          <option value="attendance">Attendance</option>
+          <option value="insubordination">Insubordination</option>
+          <option value="safety">Safety</option>
+          <option value="jobAbandon">Job abandonment</option>
+          <option value="policy">Policy</option>
+          <option value="dishonesty">Theft / dishonesty</option>
+          <option value="harassment">Harassment / conduct</option>
+          <option value="drug">Drug / alcohol</option>
+          <option value="performance">Performance</option>
+          <option value="voluntary">Voluntary quit</option>
+        </select>
+      </label>
+      <label>What happened <textarea id="desc"></textarea></label>
+      <button class="btn" id="save">SAVE INCIDENT</button>
+    </div>
+    <div class="card">
+      <div class="sub">CREWS</div>
+      <div class="grid" id="crews"></div>
+    </div>
+    <div class="card">
+      <div class="sub">INCIDENT LOG</div>
+      <div id="log"></div>
+      <button id="export">EXPORT TWC</button>
+      <button id="out">SIGN OUT</button>
+    </div>
+  </div>
+</div>
 <script>
-document.open();
-document.write((window.VP||[]).join(""));
-document.close();
+const CREWS={
+  'ASA-01':5,'ASA-02':3,'ASA-03':4,'ASA-04':2,'ASA-05':1,
+  'DFW-01':2,'DFW-02':2,'DFW-03':3,'DFW-04':2,'DFW-05':2,'DFW-06':2,
+  'DFW-07':2,'DFW-08':2,'DFW-09':2,'DFW-10':2,'DFW-11':2,'DFW-12':2
+};
+const $ = id => document.getElementById(id);
+async function sha(s){
+  const b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode('kec-v2|'+s));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function load(){
+  try{return JSON.parse(localStorage.getItem('kec_v2_incidents')||'[]')}catch(e){return []}
+}
+function save(rows){localStorage.setItem('kec_v2_incidents', JSON.stringify(rows))}
+function render(){
+  $('crew').innerHTML=Object.keys(CREWS).map(c=>`<option>${c}</option>`).join('');
+  $('crews').innerHTML=Object.entries(CREWS).map(([c,n])=>`<div class="card"><b style="color:var(--g)">${c}</b><div class="sub">${n} slots</div></div>`).join('');
+  const rows=load();
+  $('log').innerHTML=rows.length?rows.map(r=>`<div class="inc"><b>${r.employee}</b> · ${r.crew} · ${r.cat}<div class="sub">${r.at}</div><div>${r.desc}</div></div>`).join(''):'<div class="sub">No incidents on this device.</div>';
+}
+$('go').onclick=async()=>{
+  const pin=$('pin').value;
+  if(!pin||pin.length<4){$('err').textContent='PIN must be at least 4 characters.';return;}
+  const hash=await sha(pin);
+  const stored=localStorage.getItem('kec_v2_gate');
+  if(!stored){localStorage.setItem('kec_v2_gate',hash);localStorage.setItem('kec_v2_email',$('email').value||'local-owner');}
+  else if(stored!==hash){$('err').textContent='Wrong local PIN.';return;}
+  $('lock').classList.add('hidden');$('app').classList.remove('hidden');render();
+};
+$('save').onclick=()=>{
+  const employee=$('emp').value.trim(), desc=$('desc').value.trim();
+  if(!employee||!desc){alert('Employee and description required');return;}
+  const rows=load();
+  rows.unshift({employee,crew:$('crew').value,cat:$('cat').value,desc,at:new Date().toISOString()});
+  save(rows);$('emp').value='';$('desc').value='';render();
+};
+$('export').onclick=()=>{
+  const txt=load().map(r=>`${r.at}\n${r.crew} ${r.employee}\n${r.cat}\n${r.desc}\n---`).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(txt||'NO INCIDENTS');
+  a.download='TWC_Report.txt';a.click();
+};
+$('out').onclick=()=>location.reload();
 </script>
-</body></html>
+</body>
+</html>
