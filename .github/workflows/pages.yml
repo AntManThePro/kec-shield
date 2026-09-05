@@ -23,8 +23,9 @@ jobs:
         run: |
           mkdir -p site
           cp index.html shield.js .nojekyll site/
+          cp icon.svg site/ || true
+          cp manifest.webmanifest site/ || true
           if [ -d public/icons ]; then cp -R public/icons site/icons; fi
-          if [ -f public/manifest.json ]; then cp public/manifest.json site/manifest.json; fi
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
