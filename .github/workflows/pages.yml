@@ -25,7 +25,8 @@ jobs:
           cp index.html shield.js .nojekyll site/
           cp icon.svg site/ || true
           cp manifest.webmanifest site/ || true
-          if [ -d public/icons ]; then cp -R public/icons site/icons; fi
+          cp config.js site/ || true
+          cp vault.html site/ || true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
