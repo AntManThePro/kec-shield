@@ -19,14 +19,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install
-      - run: npm run build
+      - name: Stage static console
+        run: |
+          mkdir -p site
+          cp index.html shield.js .nojekyll site/
+          if [ -d public/icons ]; then cp -R public/icons site/icons; fi
+          if [ -f public/manifest.json ]; then cp public/manifest.json site/manifest.json; fi
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: site
 
   deploy:
     needs: build
